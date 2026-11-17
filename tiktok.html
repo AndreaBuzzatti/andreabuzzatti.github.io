@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Jarvis e TikTok</title>
+<style>
+  :root { --sfondo: #0f1115; --testo: #e8e8ea; --tenue: #a0a3ab; --accento: #4fb3ff; }
+  body { margin: 0; background: var(--sfondo); color: var(--testo); font: 17px/1.6 -apple-system, system-ui, sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 1.6em; margin: 0 0 12px; }
+  p { color: var(--tenue); }
+  code { display: block; word-break: break-all; background: #1a1d24; border: 1px solid #2a2d35; border-radius: 8px;
+         padding: 14px; color: var(--testo); font-size: 15px; margin: 16px 0; }
+  button { background: var(--accento); color: #0f1115; border: 0; border-radius: 8px; padding: 12px 20px;
+           font: inherit; font-weight: 600; cursor: pointer; }
+  a { color: var(--accento); }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="titolo">Jarvis e TikTok</h1>
+  <p id="spiega">Questa pagina serve a collegare il profilo TikTok di Andrea al suo assistente personale Jarvis,
+     che legge solo i numeri pubblici del profilo (follower, like, visualizzazioni dei video).
+     <a href="privacy.html">Privacy</a> · <a href="termini.html">Termini</a></p>
+  <code id="codice" hidden></code>
+  <button id="copia" hidden>Copia il codice</button>
+</main>
+<script>
+  const q = new URLSearchParams(location.search);
+  const codice = q.get("code");
+  if (codice) {
+    document.getElementById("titolo").textContent = "Autorizzazione riuscita";
+    document.getElementById("spiega").textContent = "Copia questo codice e incollalo nel Terminale del mini PC. Vale pochi minuti e una volta sola.";
+    const c = document.getElementById("codice");
+    c.textContent = codice; c.hidden = false;
+    const b = document.getElementById("copia");
+    b.hidden = false;
+    b.onclick = () => navigator.clipboard.writeText(codice).then(() => b.textContent = "Copiato");
+  } else if (q.get("error")) {
+    document.getElementById("titolo").textContent = "Autorizzazione non riuscita";
+    document.getElementById("spiega").textContent = "TikTok ha risposto: " + (q.get("error_description") || q.get("error"));
+  }
+</script>
+</body>
+</html>
